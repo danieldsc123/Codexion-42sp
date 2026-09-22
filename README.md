@@ -7,10 +7,13 @@ Each coder needs two adjacent dongles to compile, then debugs and refactors.
 The project explores POSIX threads, resource synchronization, FIFO/EDF
 scheduling with a custom heap, and timing constraints.
 
-The argument parser and a minimal command-line entry point are implemented,
-following subject version 1.5. The executable validates its arguments and
-exits; it does not run the threaded simulation yet. Sources and module headers
-are grouped under `src/`; `include/codexion.h` includes the module headers.
+The argument parser, initial memory allocation, coder metadata setup, and
+array cleanup are implemented, following subject version 1.5. The executable
+validates its arguments, allocates the arrays, initializes coder IDs and
+neighbor indices, then frees the arrays. It does not create threads yet.
+Sources are grouped under `src/`. Each module keeps its headers in a
+`headers/` subdirectory. Shared helpers live in `src/utils/`, and
+`include/codexion.h` includes the module headers.
 
 ## Instructions
 
@@ -26,7 +29,8 @@ Run the current parser with:
 All eight arguments are mandatory. Times are in milliseconds. The scheduler
 must be exactly `fifo` or `edf`. Libft is not authorized.
 
-Valid input currently exits with status 0 and no output. Invalid input prints
+Successful initialization exits with status 0 and no output. Allocation
+failure prints `Error: failed to initialize simulation` and exits with status 1. Invalid input prints
 `Error: invalid arguments` to standard error and exits with status 1.
 Numeric arguments accept decimal digits only, from 0 to `INT_MAX`; the coder
 count must be positive. Zero is accepted for durations, cooldown and the
@@ -48,8 +52,9 @@ echo $?
 - System manual entries for `gettimeofday` and `clock_gettime`: time APIs.
 - AI assistance: used to interpret the subject, organize the architecture,
   prepare the Makefile and headers, review and correct numeric conversion,
-  implement argument-parser corrections and the minimal `main`, explain the
-  code, and run validation checks. The student is responsible for understanding
+  implement argument-parser corrections, integrate initialization and cleanup
+  in `main`, correct allocation handling, complete coder initialization,
+  explain the code, and run validation checks. The student is responsible for understanding
   and reviewing these contributions.
 
 ## Blocking cases handled
