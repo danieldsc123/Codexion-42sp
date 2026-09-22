@@ -33,6 +33,22 @@ static int	cx_allocate_arrays(t_sim *sim)
 	return (0);
 }
 
+static void	cx_init_coders(t_sim *sim)
+{
+	int	i;
+
+	i = 0;
+	while (i < sim->config.number_of_coders)
+	{
+		ft_memset(&sim->coders[i], 0, sizeof(sim->coders[i]));
+		sim->coders[i].id = i + 1;
+		sim->coders[i].left_index = i;
+		sim->coders[i].right_index = (i + 1) % sim->config.number_of_coders;
+		sim->coders[i].sim = sim;
+		i++;
+	}
+}
+
 int	cx_sim_init(t_sim *sim, const t_config *config)
 {
 	ft_memset(sim, 0, sizeof(*sim));
@@ -40,5 +56,6 @@ int	cx_sim_init(t_sim *sim, const t_config *config)
 	sim->stop_reason = CX_RUNNING;
 	if (cx_allocate_arrays(sim) < 0)
 		return (-1);
+	cx_init_coders(sim);
 	return (0);
 }
