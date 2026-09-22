@@ -6,12 +6,11 @@
 /*   By: danda-si <danda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 10:56:56 by danda-si          #+#    #+#             */
-/*   Updated: 2026/09/21 13:17:36 by danda-si         ###   ########.fr       */
+/*   Updated: 2026/09/22 14:28:16 by danda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <string.h>
 
 int	cx_read_nonnegative_int(const char *text, int *value)
 {
@@ -59,9 +58,9 @@ int	cx_parse_arguments(int argc, char **argv, t_config *config)
 	if (cx_read_nonnegative_int(argv[6],
 			&parsed_config.number_of_compiles_required) < 0)
 		return (-1);
-	if (strcmp(argv[8], "fifo") == 0)
+	if (ft_strcmp(argv[8], "fifo") == 0)
 		parsed_config.scheduler = CX_FIFO;
-	else if (strcmp(argv[8], "edf") == 0)
+	else if (ft_strcmp(argv[8], "edf") == 0)
 		parsed_config.scheduler = CX_EDF;
 	else
 		return (-1);
