@@ -13,17 +13,16 @@
 #ifndef CODEXION_H
 # define CODEXION_H
 
-# include <limits.h>
-
-# include "core/codexion_init.h"
-# include "core/codexion_cleanup.h"
-# include "parser/codexion_parse.h"
-# include "time/codexion_time.h"
-# include "log/codexion_log.h"
-# include "scheduler/codexion_heap.h"
-# include "scheduler/codexion_scheduler.h"
-# include "dongle/codexion_dongle.h"
-# include "threads/codexion_coder.h"
-# include "threads/codexion_monitor.h"
+# include "utils/headers/codexion_utils.h"
+# include "core/headers/codexion_init.h"
+# include "core/headers/codexion_cleanup.h"
+# include "parser/headers/codexion_parse.h"
+# include "time/headers/codexion_time.h"
+# include "log/headers/codexion_log.h"
+# include "scheduler/headers/codexion_heap.h"
+# include "scheduler/headers/codexion_scheduler.h"
+# include "dongle/headers/codexion_dongle.h"
+# include "threads/headers/codexion_coder.h"
+# include "threads/headers/codexion_monitor.h"
 
 #endif

@@ -6,9 +6,9 @@ DEPFLAGS = -MMD -MP
 
 SRC = src/core/main.c \
 	src/parser/parse.c \
-	src/parser/parser_utils.c \
 	src/core/init.c \
 	src/core/cleanup.c \
+	src/utils/ft_atoi.c \
 	src/time/time.c \
 	src/log/log.c \
 	src/scheduler/heap.c \

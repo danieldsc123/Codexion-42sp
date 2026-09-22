@@ -6,7 +6,7 @@
 /*   By: danda-si <danda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 10:49:28 by danda-si          #+#    #+#             */
-/*   Updated: 2026/09/21 10:49:30 by danda-si         ###   ########.fr       */
+/*   Updated: 2026/09/22 15:28:01 by danda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 # define CODEXION_INIT_H
 
 # include <pthread.h>
-# include "parser/codexion_parse.h"
-# include "dongle/codexion_dongle.h"
-# include "threads/codexion_coder.h"
+# include <stdlib.h>
+# include <stdint.h>
+
+# include "parser/headers/codexion_parse.h"
+# include "dongle/headers/codexion_dongle.h"
+# include "threads/headers/codexion_coder.h"
 
 typedef enum e_stop_reason
 {

@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion_scheduler.h                               :+:      :+:    :+:   */
+/*   codexion_cleanup.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danda-si <danda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/21 10:48:30 by danda-si          #+#    #+#             */
-/*   Updated: 2026/09/21 10:48:32 by danda-si         ###   ########.fr       */
+/*   Created: 2026/09/21 10:49:48 by danda-si          #+#    #+#             */
+/*   Updated: 2026/09/22 14:37:33 by danda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CODEXION_SCHEDULER_H
-# define CODEXION_SCHEDULER_H
+#ifndef CODEXION_CLEANUP_H
+# define CODEXION_CLEANUP_H
 
-# include "scheduler/codexion_heap.h"
+struct	s_sim;
 
-struct	s_coder;
-
-int		cx_request_before(const t_request *a, const t_request *b,
-			t_policy	policy);
-int		cx_schedule_submit_locked(struct s_coder *coder);
-void	cx_schedule_cancel_locked(struct s_coder *coder);
-int		cx_schedule_ready_locked(struct s_coder *coder, t_ms now);
+int		cx_sim_join(struct s_sim *sim);
+void	cx_sim_destroy(struct s_sim *sim);
 
 #endif

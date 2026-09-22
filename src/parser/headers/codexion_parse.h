@@ -6,14 +6,14 @@
 /*   By: danda-si <danda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 10:48:10 by danda-si          #+#    #+#             */
-/*   Updated: 2026/09/21 12:52:53 by danda-si         ###   ########.fr       */
+/*   Updated: 2026/09/22 14:30:52 by danda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CODEXION_PARSE_H
 # define CODEXION_PARSE_H
 
-# include "time/codexion_time.h"
+# include "time/headers/codexion_time.h"
 
 typedef enum e_policy
 {
@@ -35,6 +35,5 @@ typedef struct s_config
 
 int	cx_read_nonnegative_int(const char *text, int *value);
 int	cx_parse_arguments(int argc, char **argv, t_config *config);
-int	ft_atoi(const char *str);
 
 #endif
