@@ -10,6 +10,7 @@ SRC = src/core/main.c \
 	src/core/cleanup.c \
 	src/utils/ft_atoi.c \
 	src/utils/ft_strcmp.c \
+	src/utils/ft_memset.c \
 	src/time/time.c \
 	src/log/log.c \
 	src/scheduler/heap.c \

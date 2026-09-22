@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danda-si <danda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/21 18:12:08 by danda-si          #+#    #+#             */
-/*   Updated: 2026/09/21 18:16:12 by danda-si         ###   ########.fr       */
+/*   Created: 2026/09/22 14:33:09 by danda-si          #+#    #+#             */
+/*   Updated: 2026/09/22 14:55:13 by danda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "utils/headers/codexion_utils.h"
 
-/* Base state only; allocation and synchronization setup are still pending. */
-int	cx_sim_init(t_sim *sim, const t_config *config)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	ft_memset(sim, 0, sizeof(*sim));
-	sim->config = *config;
-	sim->stop_reason = CX_RUNNING;
-	return (0);
+	unsigned char	*ptr;
+
+	ptr = (unsigned char *)s;
+	while (n--)
+	{
+		*ptr++ = (unsigned char)c;
+	}
+	return (s);
 }
