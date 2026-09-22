@@ -70,7 +70,9 @@ The final README must explain the actual solutions and their validation.
 The planned design uses one thread per coder, a separate monitor thread,
 one mutex protecting each dongle's state, and mutex protection for shared
 simulation state and output. A shared condition variable is planned for
-startup, timed waits, and shutdown notification. No synchronization primitives are initialized yet.
+startup, timed waits, and shutdown notification. The two shared mutexes and the condition variable are now initialized.
+Lifecycle flags record each successful initialization so cleanup also handles
+partial failures and repeated calls before threads are started.
 
 The initial contracts specify ownership of shared fields, lock order, waiting
 predicates, and a proposed protocol for granting two adjacent dongles together.

@@ -6,7 +6,7 @@
 /*   By: danda-si <danda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 18:12:08 by danda-si          #+#    #+#             */
-/*   Updated: 2026/09/22 16:27:49 by danda-si         ###   ########.fr       */
+/*   Updated: 2026/09/22 16:44:08 by danda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,20 @@ static void	cx_init_coders(t_sim *sim)
 	}
 }
 
+static int	cx_init_sync(t_sim *sim)
+{
+	if (pthread_mutex_init(&sim->state_mutex, NULL) != 0)
+		return (-1);
+	sim->lifecycle.state_mutex_ready = 1;
+	if (pthread_mutex_init(&sim->log_mutex, NULL) != 0)
+		return (-1);
+	sim->lifecycle.log_mutex_ready = 1;
+	if (pthread_cond_init(&sim->changed, NULL) != 0)
+		return (-1);
+	sim->lifecycle.condition_ready = 1;
+	return (0);
+}
+
 int	cx_sim_init(t_sim *sim, const t_config *config)
 {
 	ft_memset(sim, 0, sizeof(*sim));
@@ -57,5 +71,7 @@ int	cx_sim_init(t_sim *sim, const t_config *config)
 	if (cx_allocate_arrays(sim) < 0)
 		return (-1);
 	cx_init_coders(sim);
+	if (cx_init_sync(sim) < 0)
+		return (-1);
 	return (0);
 }
