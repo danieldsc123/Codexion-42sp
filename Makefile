@@ -14,6 +14,7 @@ SRC = src/core/main.c \
 	src/time/time.c \
 	src/log/log.c \
 	src/scheduler/heap.c \
+	src/scheduler/heap_order.c \
 	src/scheduler/scheduler.c \
 	src/dongle/dongle.c \
 	src/threads/coder.c \

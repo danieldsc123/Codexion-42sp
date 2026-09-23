@@ -38,4 +38,7 @@ int				cx_heap_pop(t_heap *heap, t_request *request);
 const t_request	*cx_heap_peek(const t_heap *heap);
 int				cx_heap_remove(t_heap *heap, int coder_id);
 
+void			cx_heap_up(t_heap *heap, size_t index);
+void			cx_heap_down(t_heap *heap, size_t index);
+
 #endif
