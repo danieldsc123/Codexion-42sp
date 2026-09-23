@@ -26,13 +26,11 @@ void	cx_stop_locked(t_sim *sim, t_stop_reason reason, int id, t_ms now)
 	pthread_cond_broadcast(&sim->changed);
 }
 
-int	cx_monitor_check_locked(t_sim *sim, t_ms now)
+static int	cx_oldest_coder(t_sim *sim)
 {
 	int	index;
 	int	oldest;
 
-	if (sim->stop_reason != CX_RUNNING)
-		return (1);
 	oldest = 0;
 	index = 1;
 	while (index < sim->config.number_of_coders)
@@ -42,6 +40,16 @@ int	cx_monitor_check_locked(t_sim *sim, t_ms now)
 			oldest = index;
 		index++;
 	}
+	return (oldest);
+}
+
+int	cx_monitor_check_locked(t_sim *sim, t_ms now)
+{
+	int	oldest;
+
+	if (sim->stop_reason != CX_RUNNING)
+		return (1);
+	oldest = cx_oldest_coder(sim);
 	if (now >= sim->coders[oldest].last_compile_start
 		+ sim->config.time_to_burnout)
 		cx_stop_locked(sim, CX_BURNOUT, oldest + 1, now);
@@ -64,7 +72,8 @@ void	*cx_monitor_routine(void *argument)
 		if (cx_clock_locked(sim, &now) < 0
 			|| cx_monitor_check_locked(sim, now))
 			break ;
-		if (cx_pause_locked(sim, now + 1) < 0)
+		if (cx_pause_locked(sim, sim->coders[cx_oldest_coder(sim)]
+				.last_compile_start + sim->config.time_to_burnout) < 0)
 			break ;
 	}
 	pthread_mutex_unlock(&sim->state_mutex);
