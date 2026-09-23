@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   phases.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danda-si <danda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,44 +11,34 @@
 /* ************************************************************************** */
 
 #include "codexion.h"
-#include <stdio.h>
 
-static int	cx_run(t_sim *sim)
+static int	cx_coder_phase(t_coder *coder, t_log_event event, t_ms duration)
 {
-	int	result;
+	t_sim	*sim;
+	t_ms	now;
+	int		active;
 
-	result = cx_sim_start(sim);
-	if (cx_sim_join(sim) < 0)
-	{
-		fprintf(stderr, "Error: failed to join threads\n");
-		return (1);
-	}
-	if (sim->stop_reason == CX_ERROR)
-		result = -1;
-	cx_sim_destroy(sim);
-	if (result < 0)
-	{
-		fprintf(stderr, "Error: simulation failed\n");
-		return (1);
-	}
-	return (0);
+	sim = coder->sim;
+	pthread_mutex_lock(&sim->state_mutex);
+	active = cx_clock_locked(sim, &now) == 0;
+	if (active)
+		active = !cx_monitor_check_locked(sim, now);
+	if (active)
+		active = cx_log_locked(sim, coder->id, event, now) == 0;
+	pthread_mutex_unlock(&sim->state_mutex);
+	if (!active)
+		return (0);
+	return (cx_wait_until(sim, now + duration));
 }
 
-int	main(int argc, char **argv)
+int	cx_coder_debug(t_coder *coder)
 {
-	t_config	config;
-	t_sim		sim;
+	return (cx_coder_phase(coder, CX_LOG_DEBUG,
+			coder->sim->config.time_to_debug));
+}
 
-	if (cx_parse_arguments(argc, argv, &config) < 0)
-	{
-		fprintf(stderr, "Error: invalid arguments\n");
-		return (1);
-	}
-	if (cx_sim_init(&sim, &config) < 0)
-	{
-		cx_sim_destroy(&sim);
-		fprintf(stderr, "Error: failed to initialize simulation\n");
-		return (1);
-	}
-	return (cx_run(&sim));
+int	cx_coder_refactor(t_coder *coder)
+{
+	return (cx_coder_phase(coder, CX_LOG_REFACTOR,
+			coder->sim->config.time_to_refactor));
 }

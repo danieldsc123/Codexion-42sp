@@ -63,6 +63,22 @@ static int	cx_init_sync(t_sim *sim)
 	return (0);
 }
 
+static int	cx_init_dongles(t_sim *sim)
+{
+	int	index;
+
+	index = 0;
+	while (index < sim->config.number_of_coders)
+	{
+		if (cx_dongle_init(&sim->dongles[index], index,
+				sim->config.scheduler) < 0)
+			return (-1);
+		sim->lifecycle.dongles_ready++;
+		index++;
+	}
+	return (0);
+}
+
 int	cx_sim_init(t_sim *sim, const t_config *config)
 {
 	ft_memset(sim, 0, sizeof(*sim));
@@ -71,7 +87,7 @@ int	cx_sim_init(t_sim *sim, const t_config *config)
 	if (cx_allocate_arrays(sim) < 0)
 		return (-1);
 	cx_init_coders(sim);
-	if (cx_init_sync(sim) < 0)
+	if (cx_init_sync(sim) < 0 || cx_init_dongles(sim) < 0)
 		return (-1);
 	return (0);
 }

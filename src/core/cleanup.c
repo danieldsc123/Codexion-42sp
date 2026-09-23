@@ -33,6 +33,11 @@ static void	cx_destroy_sync(t_sim *sim)
 
 void	cx_sim_destroy(struct s_sim *sim)
 {
+	while (sim->lifecycle.dongles_ready > 0)
+	{
+		sim->lifecycle.dongles_ready--;
+		cx_dongle_destroy(&sim->dongles[sim->lifecycle.dongles_ready]);
+	}
 	cx_destroy_sync(sim);
 	if (sim->coders)
 	{

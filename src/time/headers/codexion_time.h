@@ -23,4 +23,7 @@ int		cx_now_ms(t_ms *now);
 void	cx_to_timespec(t_ms deadline, struct timespec *result);
 int		cx_wait_until(struct s_sim *sim, t_ms deadline);
 
+int		cx_pause_locked(struct s_sim *sim, t_ms deadline);
+int		cx_clock_locked(struct s_sim *sim, t_ms *now);
+
 #endif

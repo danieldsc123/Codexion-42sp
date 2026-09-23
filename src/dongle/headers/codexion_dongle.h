@@ -32,4 +32,6 @@ void	cx_dongle_destroy(t_dongle *dongle);
 int		cx_dongles_acquire(struct s_coder *coder);
 void	cx_dongles_release_locked(struct s_coder *coder, t_ms now);
 
+void	cx_take_one_locked(struct s_coder *coder, int index, t_ms now);
+
 #endif
