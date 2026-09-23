@@ -76,6 +76,15 @@ class SimulationTests(unittest.TestCase):
                 with self.subTest(n=n, policy=policy):
                     self.check_success([n, 2000, 12, 4, 3, 5, 6, policy])
 
+    def test_edf_odd_ring_stagger(self):
+        # A feasible rotating schedule avoids the synchronized three-batch gap.
+        for n, burnout, compile_ms, cooldown in ((5, 550, 200, 0),
+                                                 (7, 510, 200, 0),
+                                                 (5, 600, 200, 20)):
+            with self.subTest(n=n, cooldown=cooldown):
+                self.check_success([n, burnout, compile_ms, 0, 0, 5,
+                                    cooldown, 'edf'])
+
     def test_subject_example(self):
         for policy in ('fifo', 'edf'):
             self.check_success([5, 800, 200, 100, 50, 3, 20, policy])

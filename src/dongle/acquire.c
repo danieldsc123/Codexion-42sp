@@ -12,6 +12,22 @@
 
 #include "codexion.h"
 
+static int	cx_initial_slot_ready(t_coder *coder, t_ms now)
+{
+	t_sim	*sim;
+	t_ms	delay;
+	int		count;
+
+	sim = coder->sim;
+	count = sim->config.number_of_coders;
+	if (sim->config.scheduler != CX_EDF || count < 3 || count % 2 == 0
+		|| coder->request.sequence >= (unsigned long long)count)
+		return (1);
+	delay = (sim->config.time_to_compile + sim->config.dongle_cooldown)
+		* (t_ms)coder->request.sequence / (count / 2);
+	return (now >= sim->start_ms + delay);
+}
+
 static int	cx_take_pair(t_coder *coder, t_ms now)
 {
 	t_sim	*sim;
@@ -26,7 +42,8 @@ static int	cx_take_pair(t_coder *coder, t_ms now)
 		}
 		return (0);
 	}
-	if (!cx_schedule_ready_locked(coder, now))
+	if (!cx_initial_slot_ready(coder, now)
+		|| !cx_schedule_ready_locked(coder, now))
 		return (0);
 	cx_schedule_cancel_locked(coder);
 	cx_take_one_locked(coder, coder->left_index, now);
