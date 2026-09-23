@@ -111,7 +111,13 @@ The EDF tie-break order is an implementation choice: the subject requires a
 deterministic tie-breaker but does not specify its exact order. Arrival means
 registration under the state lock. Initial requests are registered in alternating
 index groups (0, 2, 4, ... then 1, 3, 5, ...), allowing disjoint pairs to start
-without an avoidable chain of equal-priority requests.
+without an avoidable chain of equal-priority requests. Under EDF, odd rings
+also stagger initial grants: request rank `r` cannot start before
+`start + floor(r * (compile + cooldown) / floor(N / 2))`. Requests remain
+queued throughout this wait, and heap priority still applies. This distributes
+initial starts instead of synchronizing batches that can create an avoidable
+three-compilation gap. Only the initial requests are staggered; subsequent
+requests are submitted immediately after refactoring.
 
 A pair is eligible only when its coder is first in both queues, both resources
 are free, and both cooldowns have expired. Older pending EDF deadlines remain
@@ -133,8 +139,8 @@ Release records `available_at = release_time + dongle_cooldown` under the
 resource mutex. Waiting threads recheck eligibility after notifications and
 short timed waits; cooldown expiry does not require another thread to signal.
 
-The monitor checks the oldest deadline and waits at most 1 ms between checks,
-or wakes earlier after a state change. Transitions also check for an already
+The monitor checks the oldest deadline and waits until that deadline,
+or wakes earlier after a state change to recompute it. Transitions also check for an already
 expired deadline before renewing it, preventing a late acquisition from reviving
 a coder. Detection uses `now >= deadline` and emits a single terminal log.
 The timestamp is the observed time, not a fabricated deadline timestamp.

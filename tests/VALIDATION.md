@@ -35,3 +35,19 @@ Valgrind 3.18.1. This records observed checks, not a guarantee about all machine
 The heap used for scheduling is a custom binary min-heap. Each dongle's queue
 has capacity two because only its two neighbors can request it; the generic
 heap itself is also tested at larger capacities.
+
+## Subject-review corrections
+
+- Reproduced an avoidable EDF burnout with `5 550 200 0 0 3 0 edf`: coder 3
+  expired at 550 ms after synchronized initial starts. Initial EDF grants on
+  odd rings are now staggered without bypassing either dongle's heap head.
+- Added regression scenarios with 5 and 7 coders and with nonzero cooldown,
+  checking completion, phase durations, resource exclusion and deadline gaps.
+  All 10 automated tests passed after the changes. These cases are regression
+  evidence, not a proof of schedulability for every feasible configuration.
+- The monitor now waits for the earliest burnout deadline and recomputes it
+  on state notifications. A further 60 native burnout checks observed a maximum
+  timestamp delay of 1 ms. This does not erase the earlier 11 ms observation
+  or establish an unconditional output-latency guarantee.
+- Norminette passed for all production sources and headers. DRD reported zero
+  errors on `5 4000 20 5 5 4 2 edf`. A second make did not relink.
