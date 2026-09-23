@@ -1,2 +1,5 @@
 /codexion
 /obj/
+
+__pycache__/
+*.pyc
