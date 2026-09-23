@@ -66,7 +66,7 @@ static int	cx_init_sync(t_sim *sim)
 int	cx_sim_init(t_sim *sim, const t_config *config)
 {
 	ft_memset(sim, 0, sizeof(*sim));
-	sim->config = *config;
+	cx_copy_config(&sim->config, config);
 	sim->stop_reason = CX_RUNNING;
 	if (cx_allocate_arrays(sim) < 0)
 		return (-1);

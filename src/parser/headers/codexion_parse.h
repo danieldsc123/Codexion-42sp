@@ -33,7 +33,9 @@ typedef struct s_config
 	t_policy	scheduler;
 }	t_config;
 
-int	cx_read_nonnegative_int(const char *text, int *value);
-int	cx_parse_arguments(int argc, char **argv, t_config *config);
+int		cx_read_nonnegative_int(const char *text, int *value);
+int		cx_parse_arguments(int argc, char **argv, t_config *config);
+
+void	cx_copy_config(t_config *destination, const t_config *source);
 
 #endif

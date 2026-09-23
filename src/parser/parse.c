@@ -44,6 +44,19 @@ static int	cx_read_all_times(char **argv, t_config *parsed_config)
 	return (0);
 }
 
+void	cx_copy_config(t_config *destination, const t_config *source)
+{
+	destination->number_of_coders = source->number_of_coders;
+	destination->time_to_burnout = source->time_to_burnout;
+	destination->time_to_compile = source->time_to_compile;
+	destination->time_to_debug = source->time_to_debug;
+	destination->time_to_refactor = source->time_to_refactor;
+	destination->number_of_compiles_required
+		= source->number_of_compiles_required;
+	destination->dongle_cooldown = source->dongle_cooldown;
+	destination->scheduler = source->scheduler;
+}
+
 int	cx_parse_arguments(int argc, char **argv, t_config *config)
 {
 	t_config	parsed_config;
@@ -64,6 +77,6 @@ int	cx_parse_arguments(int argc, char **argv, t_config *config)
 		parsed_config.scheduler = CX_EDF;
 	else
 		return (-1);
-	*config = parsed_config;
+	cx_copy_config(config, &parsed_config);
 	return (0);
 }
